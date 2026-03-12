@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TcpServer
 {
-    public class User
+    public partial class User: ObservableObject
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -15,8 +16,9 @@ namespace TcpServer
         public bool IsActive { get; set; }
 
         //按钮状态
-        public bool IsDownLoading { get; set; } = true;
-        public bool IsPausing { get; set; } = false;
-        public readonly bool IsDeleting = true;
+        [ObservableProperty]
+        public bool isOpenDownLoading  = true;
+        [ObservableProperty]
+        public bool isOpenPausing= false;
     }
 }

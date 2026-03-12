@@ -132,6 +132,8 @@ namespace TcpServer
         [RelayCommand]
         private void DownLoad(User? user)
         {
+            user.IsOpenDownLoading = false;
+            user.IsOpenPausing = true;
             if (user == null) return;
 
             //拿/创建任务到全局_downloadTasks
@@ -144,6 +146,8 @@ namespace TcpServer
         [RelayCommand]
         private void Pause(User? user)
         {
+            user.IsOpenDownLoading = true;
+            user.IsOpenPausing = false;
             if (user == null) return;
             
             if (_downloadTasks.TryGetValue(user.Id, out var task))

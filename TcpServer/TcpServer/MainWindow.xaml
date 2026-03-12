@@ -86,8 +86,8 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                             <hc:ButtonGroup>
-                                                <Button Content="下载" IsEnabled="{Binding IsDownLoading}" Command="{Binding DataContext.DownLoadCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
-                                                <Button Content="暂停" IsEnabled="{Binding IsPausing}" Command="{Binding DataContext.PauseCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                                <Button Content="下载" IsEnabled="{Binding IsOpenDownLoading}" Command="{Binding DataContext.DownLoadCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                                <Button Content="暂停" IsEnabled="{Binding IsOpenPausing}" Command="{Binding DataContext.PauseCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
                                                 <!--<Button Content="恢复" IsEnabled="{Binding IsResuming}" Command="{Binding DataContext.ResumeCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>-->
                                                 <Button Content="删除" IsEnabled="{Binding IsDeleting}" Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
                                             </hc:ButtonGroup>
