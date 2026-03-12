@@ -1,0 +1,121 @@
+﻿<Window x:Class="TcpServer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TcpServer"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <!-- 定义样式 -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <!-- 布尔值转可见性转换器 -->
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
+
+    <Grid Margin="10">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 标题和搜索区域 -->
+        <StackPanel Grid.Column="0" Margin="0,0,10,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0" 
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                         Padding="2"
+                         Height="25"
+                         Margin="0,0,10,0"/>
+
+                <Button Grid.Column="1" 
+                        Command="{Binding FilterUsersCommand}"
+                        Style="{StaticResource ModernButton}"
+                        Width="80">
+                    <TextBlock>筛选</TextBlock>
+                </Button>
+            </Grid>
+
+            <!-- 用户列表区域 -->
+            <GroupBox
+                  Header="用户列表" 
+                  Margin="0,0,0,10">
+                <Grid>
+                    <!-- 加载指示器 -->
+                    <Border Background="#80FFFFFF"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
+                        Panel.ZIndex="1">
+                        <TextBlock Text="加载中..." 
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               FontWeight="Bold"/>
+                    </Border>
+
+                    <DataGrid ItemsSource="{Binding Users}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          Margin="0,0,0,5">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="名称" 
+                                            Binding="{Binding Name}" 
+                                            Width="100"/>
+
+                            <DataGridTextColumn Header="路径" 
+                                            Binding="{Binding DownLoadUrl}" 
+                                            Width="*"/>
+
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <hc:ButtonGroup>
+                                                <Button Content="下载" IsEnabled="{Binding IsDownLoading}" Command="{Binding DataContext.DownLoadCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                                <Button Content="暂停" IsEnabled="{Binding IsPausing}" Command="{Binding DataContext.PauseCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                                <!--<Button Content="恢复" IsEnabled="{Binding IsResuming}" Command="{Binding DataContext.ResumeCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>-->
+                                                <Button Content="删除" IsEnabled="{Binding IsDeleting}" Command="{Binding DataContext.DeleteCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                            </hc:ButtonGroup>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </GroupBox>
+
+            <!-- 状态栏 -->
+            <StatusBar VerticalAlignment="Bottom">
+                <StatusBarItem>
+                    <TextBlock Text="{Binding StatusMessage}"/>
+                </StatusBarItem>
+            </StatusBar>
+
+        </StackPanel>
+
+        <ListView Grid.Column="1">
+            <TextBlock>日志区域</TextBlock>
+            <TextBlock>日志区域</TextBlock>
+            <TextBlock>日志区域</TextBlock>
+            <TextBlock>日志区域</TextBlock>
+        </ListView>
+
+    </Grid>
+</Window>
