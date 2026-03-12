@@ -1,0 +1,20 @@
+bin/
+obj/
+appsettings.Development.json
+.fake/
+paket-files/
+
+logs/
+
+.vs/
+.suo
+
+*.db
+*.db-shm
+*.db-wal
+
+
+# nuget caches 
+nuget-package-caches
+
+*.csproj.user
