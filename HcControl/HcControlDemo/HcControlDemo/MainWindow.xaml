@@ -6,54 +6,103 @@
         xmlns:local="clr-namespace:HcControlDemo"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-
+        Title="HandyControl Demo"
+        Height="500"
+        Width="900"
+        Background="#F5F6F7">
 
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- 左侧菜单 -->
-        <TextBlock>ssss</TextBlock>
-        
-        <TreeView ItemsSource="{Binding Menus}">
-            
-            <TreeView.ItemTemplate>
+        <!-- 左侧全新导航菜单（整行点击） -->
+        <Border Padding="2" Background="white">
+            <ListBox ItemsSource="{Binding Menus}"
+                     Background="Transparent"
+                     BorderThickness="1"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ListBox_SelectionChanged">
 
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                <!-- 列表项样式 -->
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
 
-                    <!-- 一级菜单 -->
-                    <TextBlock Text="{Binding Title}" FontSize="14"/>
+                <!-- 菜单模板 -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <!-- 一级菜单 -->
+                            <Border Background="White" Height="35" Padding="5,0">
+                                <TextBlock Text="{Binding Title}"
+                                           FontSize="15"
+                                           FontFamily="Consolas"
+                                           FontWeight="SemiBold"
+                                           Foreground="Black"
+                                           VerticalAlignment="Center"/>
+                            </Border>
 
-                    <HierarchicalDataTemplate.ItemTemplate>
+                            <!-- 二级菜单（可点击整行） -->
+                            <ListBox ItemsSource="{Binding Children}"
+                                     Background="Transparent"
+                                     BorderThickness="0">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="Margin" Value="2,1"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
 
-                        <!-- 二级菜单 -->
-                        <DataTemplate>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <!-- 整行点击区域 -->
+                                        <Button Content="{Binding Title}"
+                                                Height="28"
+                                                Foreground="White"
+                                                Background="#3A3D41"
+                                                BorderThickness="0"
+                                                HorizontalContentAlignment="Left"
+                                                Padding="10,0"
+                                                Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding PageKey}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#4A4E54"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed" Value="True">
+                                                            <Setter Property="Background" Value="#5A5F66"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
 
-                            <Button Content="{Binding Title}"
-                                    Padding="5"
-                                    HorizontalAlignment="Left"
-                                    Command="{Binding DataContext.NavigateCommand,
-                                    RelativeSource={RelativeSource AncestorType=Window}}"
-                                    CommandParameter="{Binding PageKey}"/>
-
-                        </DataTemplate>
-
-                    </HierarchicalDataTemplate.ItemTemplate>
-
-                </HierarchicalDataTemplate>
-
-            </TreeView.ItemTemplate>
-
-        </TreeView>
-
-        <!-- 右侧页面 -->
-        <ContentControl
-            Grid.Column="1"
-            Content="{Binding CurrentView}"/>
-
+        <!-- 右侧页面（不变） -->
+        <Border Grid.Column="1"
+                Background="White"
+                Margin="3"
+                CornerRadius="5"
+                Padding="10">
+            <ContentControl/>
+        </Border>
     </Grid>
 </Window>

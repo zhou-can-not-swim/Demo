@@ -22,7 +22,11 @@ namespace HcControlDemo
         private void InitMenus()
         {
             Menus = new ObservableCollection<MenuItemModel>
-            {
+            { new MenuItemModel
+                {
+                    Title="首页",
+                    Children=[]
+                },
                 new MenuItemModel
                 {
                     Title="系统管理",
