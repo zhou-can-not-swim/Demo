@@ -1,0 +1,4 @@
+python文件夹整体移动到bin/debug目录下
+
+下载python脚本直接双击install.bat
+在requirement里面添加对应的包名
